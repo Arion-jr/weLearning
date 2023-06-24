@@ -1,0 +1,41 @@
+@startuml
+actor "Student"
+left to right direction
+
+Student --> (Show profile info)
+Student --> (Show all students)
+Student --> (Show all groups)
+Student --> (Show all files)
+Student --> (Show all professors)
+Student --> (Show all discussions)
+Student --> (Show all discussion reservations)
+
+rectangle admin {
+Student --> (Delete group)
+Student --> (Create group)
+Student --> (Remove student from group)
+Student --> (Delete files)
+Student --> (Upload files)
+Student --> (Delete a discussion reservation)
+Student --> (Create discussion reservation)
+
+(Delete group) ..> (Become admin) : <<include>>
+(Delete group) ..> (Create group) : <<include>>
+(Create group) ..> (Become admin) : <<include>>
+(Remove student from group) ..> (Become admin) : <<include>>
+(Delete files) ..> (Become admin) : <<include>>
+(Upload files) ..> (Become admin) : <<include>>
+(Delete a discussion reservation) ..> (Become admin) : <<include>>
+(Delete a discussion reservation) ..> (Create discussion reservation) : <<include>>
+(Create discussion reservation) ..> (Become admin) : <<include>>
+}
+
+rectangle fellow {
+Student --> (Join group)
+Student --> (Leave group)
+
+(Join group) ..> (Become fellow) : <<include>>
+(Leave group) ..> (Become fellow) : <<include>>
+}
+
+@enduml

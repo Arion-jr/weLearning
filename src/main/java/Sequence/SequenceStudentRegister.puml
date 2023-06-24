@@ -1,0 +1,32 @@
+@startuml
+actor User
+boundary RestUI
+participant JWTAuth
+participant StudentController
+participant StudentService
+participant AccountRepository
+participant StudentRepository
+database Database
+
+group User/Student Register
+User -> RestUI : POST /api/register/student/?username={username}&password={password}name={name}&surname={surname}
+RestUI -> StudentController : register(data)
+StudentController -> StudentService :register(data)
+StudentService -> AccountRepository : save(new Account(email, shaPassword, role))
+StudentService -> StudentRepository : save(new Student(account.getId(), data.getName(), data.getSurname());
+AccountRepository -> Database : connection
+StudentRepository -> Database : connection
+Database -> AccountRepository : OK
+Database -> StudentRepository : OK
+AccountRepository -> StudentService : OK
+StudentRepository -> StudentService : OK
+StudentService -> AccountRepository : findByRoleAndUsernameAndPassword
+AccountRepository -> Database : connection
+Database -> AccountRepository : User
+AccountRepository -> StudentService : User
+StudentService -> JWTAuth : User
+JWTAuth -> StudentService : JWT
+StudentService -> StudentController : JWT
+StudentController -> RestUI : JWT
+RestUI -> User : 200 OK - HTML Response (User)
+@enduml

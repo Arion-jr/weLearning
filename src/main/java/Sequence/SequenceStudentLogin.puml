@@ -1,0 +1,23 @@
+@startuml
+actor User
+boundary RestUI
+participant JWTAuth
+participant StudentController
+participant StudentService
+participant AccountRepository
+database Database
+
+group User/Student Login
+User -> RestUI : POST /api/login/student/?username={username}&password={password}
+RestUI -> StudentController : loginStudent(username, password)
+StudentController -> StudentService :loginStudent(username, password)
+StudentService -> AccountRepository : findByRoleAndUsernameAndPassword
+AccountRepository -> Database : connection
+Database -> AccountRepository : User
+AccountRepository -> StudentService : User
+StudentService -> JWTAuth : User
+JWTAuth -> StudentService : JWT
+StudentService -> StudentController : JWT
+StudentController -> RestUI : JWT
+RestUI -> User : 200 OK - HTML Response (User)
+@enduml
