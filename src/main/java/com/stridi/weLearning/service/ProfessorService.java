@@ -26,13 +26,13 @@ public interface ProfessorService {
 
     File getFile(Long fileId);
 
-    Page<Lesson> getDiscussions(Integer page, Integer pageSize);
+    Page<Discussion> getDiscussions(Integer page, Integer pageSize);
 
-    Lesson getDiscussion(Long discussionId);
+    Discussion getDiscussion(Long discussionId);
 
-    Lesson createDiscussion(String name, LocalDateTime date);
+    Discussion createDiscussion(String name, LocalDateTime date);
 
-    Lesson updateDiscussion(Long discussionId, String name, LocalDateTime date);
+    Discussion updateDiscussion(Long discussionId, String name, LocalDateTime date);
 
     void deleteDiscussion(Long discussionId);
 

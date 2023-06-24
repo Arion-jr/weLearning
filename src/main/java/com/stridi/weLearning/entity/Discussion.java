@@ -29,7 +29,7 @@ import static org.hibernate.annotations.OnDeleteAction.CASCADE;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Lesson extends HibernateEntity implements Serializable {
+public class Discussion extends HibernateEntity implements Serializable {
 
 	@Id
 	@Column(nullable = false)
@@ -49,7 +49,7 @@ public class Lesson extends HibernateEntity implements Serializable {
 	@Column(nullable = false)
 	private Boolean deleted = Boolean.FALSE;
 
-	public Lesson(Long professorId, String name, LocalDateTime date) {
+	public Discussion(Long professorId, String name, LocalDateTime date) {
 		this.professorId = professorId;
 		this.name = name;
 		this.date = date;

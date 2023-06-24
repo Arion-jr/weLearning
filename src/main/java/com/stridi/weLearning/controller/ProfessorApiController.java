@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import com.stridi.weLearning.entity.Lesson;
+import com.stridi.weLearning.entity.Discussion;
 import com.stridi.weLearning.entity.File;
 import com.stridi.weLearning.entity.Group;
 import com.stridi.weLearning.entity.Professor;
@@ -169,8 +169,8 @@ public class ProfessorApiController {
 			@ApiResponse(responseCode = "400", description = "Operation failed", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "403", description = "Authentication Failure", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	})
-	Page<Lesson> getDiscussions(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-                                @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
+	Page<Discussion> getDiscussions(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+									@RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
 		return professorService.getDiscussions(page, pageSize);
 	}
 
@@ -181,7 +181,7 @@ public class ProfessorApiController {
 			@ApiResponse(responseCode = "400", description = "Operation failed", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "403", description = "Authentication Failure", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	})
-    Lesson getDiscussion(@PathVariable("discussionId") Long discussionId) {
+	Discussion getDiscussion(@PathVariable("discussionId") Long discussionId) {
 		return professorService.getDiscussion(discussionId);
 	}
 
@@ -192,8 +192,8 @@ public class ProfessorApiController {
 			@ApiResponse(responseCode = "400", description = "Operation failed", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "403", description = "Authentication Failure", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	})
-    Lesson createDiscussion(@RequestParam(value = "name") String name,
-                            @RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
+	Discussion createDiscussion(@RequestParam(value = "name") String name,
+								@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
 		return professorService.createDiscussion(name, date);
 	}
 
@@ -204,9 +204,9 @@ public class ProfessorApiController {
 			@ApiResponse(responseCode = "400", description = "Operation failed", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "403", description = "Authentication Failure", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	})
-    Lesson updateDiscussion(@PathVariable("discussionId") Long discussionId,
-                            @RequestParam(value = "name") String name,
-                            @RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
+	Discussion updateDiscussion(@PathVariable("discussionId") Long discussionId,
+								@RequestParam(value = "name") String name,
+								@RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date) {
 		return professorService.updateDiscussion(discussionId, name, date);
 	}
 

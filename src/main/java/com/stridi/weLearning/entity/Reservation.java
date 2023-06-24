@@ -56,6 +56,6 @@ public class Reservation extends HibernateEntity implements Serializable {
 	@ManyToOne
 	@OnDelete(action = CASCADE)
 	@JoinColumn(name = "discussionId", insertable = false, updatable = false)
-	private Lesson discussion;
+	private Discussion discussion;
 
 }

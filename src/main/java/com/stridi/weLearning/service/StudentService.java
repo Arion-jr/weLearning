@@ -41,9 +41,9 @@ public interface StudentService {
 
     Professor getProfessor(Long professorId);
 
-    Page<Lesson> getDiscussions(Long professorId, Integer page, Integer pageSize);
+    Page<Discussion> getDiscussions(Long professorId, Integer page, Integer pageSize);
 
-    Lesson getDiscussion(Long discussionId);
+    Discussion getDiscussion(Long discussionId);
 
     Page<Reservation> getReservations(Long groupId, Integer page, Integer pageSize);
 

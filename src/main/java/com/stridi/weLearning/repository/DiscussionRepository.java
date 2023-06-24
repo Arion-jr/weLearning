@@ -1,6 +1,6 @@
 package com.stridi.weLearning.repository;
 
-import com.stridi.weLearning.entity.Lesson;
+import com.stridi.weLearning.entity.Discussion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface DiscussionRepository extends JpaRepository<Lesson, Long> {
+public interface DiscussionRepository extends JpaRepository<Discussion, Long> {
 
-	Optional<Lesson> findByIdAndDeletedFalse(Long id);
+	Optional<Discussion> findByIdAndDeletedFalse(Long id);
 
-	Page<Lesson> findAllByProfessorIdAndDeletedFalse(Long professorId, Pageable pageable);
+	Page<Discussion> findAllByProfessorIdAndDeletedFalse(Long professorId, Pageable pageable);
 
 }

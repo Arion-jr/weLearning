@@ -6,7 +6,7 @@ import com.stridi.weLearning.utils.object.RestResponsePage;
 import com.stridi.weLearning.utils.object.Role;
 import lombok.extern.slf4j.Slf4j;
 import com.stridi.weLearning.entity.Account;
-import com.stridi.weLearning.entity.Lesson;
+import com.stridi.weLearning.entity.Discussion;
 import com.stridi.weLearning.entity.File;
 import com.stridi.weLearning.entity.Group;
 import com.stridi.weLearning.entity.Professor;
@@ -245,12 +245,12 @@ public class ProfessorApiControllerTest {
 
 	@Test
 	public void getDiscussions() {
-		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
-		Page<Lesson> discussionPage = new PageImpl<>(List.of(discussion), PageRequest.of(0, 10), 1);
+		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Page<Discussion> discussionPage = new PageImpl<>(List.of(discussion), PageRequest.of(0, 10), 1);
 		given(professorService.getDiscussions(any(), any())).willReturn(discussionPage);
 
-		ParameterizedTypeReference<RestResponsePage<Lesson>> type = new ParameterizedTypeReference<>() {};
-		ResponseEntity<RestResponsePage<Lesson>> response =
+		ParameterizedTypeReference<RestResponsePage<Discussion>> type = new ParameterizedTypeReference<>() {};
+		ResponseEntity<RestResponsePage<Discussion>> response =
 				restTemplate.exchange(
 						"/api/professor/discussion/list", HttpMethod.GET, new HttpEntity<>(null, headers), type);
 
@@ -261,13 +261,13 @@ public class ProfessorApiControllerTest {
 
 	@Test
 	public void getDiscussion() {
-		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
 		given(professorService.getDiscussion(any())).willReturn(discussion);
 
-		ResponseEntity<Lesson> response =
+		ResponseEntity<Discussion> response =
 				restTemplate.exchange(
 						"/api/professor/discussion/id/{discussionId}", HttpMethod.GET, new HttpEntity<>(null, headers),
-						Lesson.class, discussion.getId());
+						Discussion.class, discussion.getId());
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
@@ -276,13 +276,13 @@ public class ProfessorApiControllerTest {
 
 	@Test
 	public void createDiscussion() {
-		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
 		given(professorService.createDiscussion(any(), any())).willReturn(discussion);
 
-		ResponseEntity<Lesson> response =
+		ResponseEntity<Discussion> response =
 				restTemplate.exchange(
 						"/api/professor/discussion?name={name}&date={date}", HttpMethod.POST, new HttpEntity<>(null, headers),
-						Lesson.class, discussion.getName(), discussion.getDate());
+						Discussion.class, discussion.getName(), discussion.getDate());
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
@@ -291,13 +291,13 @@ public class ProfessorApiControllerTest {
 
 	@Test
 	public void updateDiscussion() {
-		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
 		given(professorService.updateDiscussion(any(), any(), any())).willReturn(discussion);
 
-		ResponseEntity<Lesson> response =
+		ResponseEntity<Discussion> response =
 				restTemplate.exchange(
 						"/api/professor/discussion/id/{discussionId}?name={name}&date={date}", HttpMethod.PUT, new HttpEntity<>(null, headers),
-						Lesson.class, discussion.getId(), discussion.getName(), discussion.getDate());
+						Discussion.class, discussion.getId(), discussion.getName(), discussion.getDate());
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
@@ -306,7 +306,7 @@ public class ProfessorApiControllerTest {
 
 	@Test
 	public void deleteDiscussion() {
-		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
 
 		ResponseEntity<String> response =
 				restTemplate.exchange(

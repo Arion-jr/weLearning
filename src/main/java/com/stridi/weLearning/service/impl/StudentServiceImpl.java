@@ -7,7 +7,7 @@ import com.stridi.weLearning.utils.object.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.stridi.weLearning.entity.Account;
-import com.stridi.weLearning.entity.Lesson;
+import com.stridi.weLearning.entity.Discussion;
 import com.stridi.weLearning.entity.FellowStudent;
 import com.stridi.weLearning.entity.File;
 import com.stridi.weLearning.entity.Group;
@@ -309,7 +309,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Page<Lesson> getDiscussions(Long professorId, Integer page, Integer pageSize) {
+	public Page<Discussion> getDiscussions(Long professorId, Integer page, Integer pageSize) {
 		if (page == null || page < 0) page = 0;
 		if (pageSize == null || pageSize < 1) pageSize = 1;
 		else if (pageSize > 50) pageSize = 50;
@@ -317,7 +317,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Lesson getDiscussion(Long discussionId) {
+	public Discussion getDiscussion(Long discussionId) {
 		return discussionRepository.findByIdAndDeletedFalse(discussionId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid discussionId"));
 	}
@@ -347,7 +347,7 @@ public class StudentServiceImpl implements StudentService {
 			throw new IllegalArgumentException("You are not the admin of this group");
 		}
 
-		Lesson discussion = discussionRepository.findByIdAndDeletedFalse(discussionId)
+		Discussion discussion = discussionRepository.findByIdAndDeletedFalse(discussionId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid discussionId"));
 
 		if (LocalDateTime.now().isAfter(discussion.getDate())) {
@@ -375,7 +375,7 @@ public class StudentServiceImpl implements StudentService {
 			throw new IllegalArgumentException("You are not the admin of this group");
 		}
 
-		Lesson discussion = discussionRepository.findByIdAndDeletedFalse(reservation.getDiscussionId())
+		Discussion discussion = discussionRepository.findByIdAndDeletedFalse(reservation.getDiscussionId())
 				.orElseThrow(() -> new IllegalArgumentException("Invalid reservation discussionId"));
 
 		if (LocalDateTime.now().isAfter(discussion.getDate())) {
@@ -400,7 +400,7 @@ public class StudentServiceImpl implements StudentService {
 			throw new IllegalArgumentException("You are not the admin of this group");
 		}
 
-		Lesson discussion = discussionRepository.findByIdAndDeletedFalse(reservation.getDiscussionId())
+		Discussion discussion = discussionRepository.findByIdAndDeletedFalse(reservation.getDiscussionId())
 				.orElseThrow(() -> new IllegalArgumentException("Invalid reservation discussionId"));
 
 		if (LocalDateTime.now().isAfter(discussion.getDate())) {
