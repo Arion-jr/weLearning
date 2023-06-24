@@ -6,7 +6,7 @@ import com.stridi.weLearning.utils.object.RestResponsePage;
 import com.stridi.weLearning.utils.object.Role;
 import lombok.extern.slf4j.Slf4j;
 import com.stridi.weLearning.entity.Account;
-import com.stridi.weLearning.entity.Discussion;
+import com.stridi.weLearning.entity.Lesson;
 import com.stridi.weLearning.entity.File;
 import com.stridi.weLearning.entity.Group;
 import com.stridi.weLearning.entity.Professor;
@@ -360,12 +360,12 @@ public class StudentApiControllerTest {
 	@Test
 	public void getDiscussions() {
 		Professor professor = new Professor(1L, 1L, "Professor name", "Professor surname", null);
-		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
-		Page<Discussion> discussionPage = new PageImpl<>(List.of(discussion), PageRequest.of(0, 10), 1);
+		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Page<Lesson> discussionPage = new PageImpl<>(List.of(discussion), PageRequest.of(0, 10), 1);
 		given(studentService.getDiscussions(any(), any(), any())).willReturn(discussionPage);
 
-		ParameterizedTypeReference<RestResponsePage<Discussion>> type = new ParameterizedTypeReference<>() {};
-		ResponseEntity<RestResponsePage<Discussion>> response =
+		ParameterizedTypeReference<RestResponsePage<Lesson>> type = new ParameterizedTypeReference<>() {};
+		ResponseEntity<RestResponsePage<Lesson>> response =
 				restTemplate.exchange(
 						"/api/student/professor/id/{professorId}/discussions", HttpMethod.GET, new HttpEntity<>(null, headers),
 						type, professor.getId());
@@ -377,13 +377,13 @@ public class StudentApiControllerTest {
 
 	@Test
 	public void getDiscussion() {
-		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
 		given(studentService.getDiscussion(any())).willReturn(discussion);
 
-		ResponseEntity<Discussion> response =
+		ResponseEntity<Lesson> response =
 				restTemplate.exchange(
 						"/api/student/discussion/id/{discussionId}", HttpMethod.GET, new HttpEntity<>(null, headers),
-						Discussion.class, discussion.getId());
+						Lesson.class, discussion.getId());
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertNotNull(response.getBody());
@@ -427,7 +427,7 @@ public class StudentApiControllerTest {
 	public void createReservation() {
 		Group group = new Group(1L, 1L, 1L, "Test Group", false, null, null, List.of());
 		Reservation reservation = new Reservation(1L, 1L, 1L, false, null, null);
-		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
 		given(studentService.createReservation(any(), any())).willReturn(reservation);
 
 		ResponseEntity<Reservation> response =
@@ -443,7 +443,7 @@ public class StudentApiControllerTest {
 	@Test
 	public void updateReservation() {
 		Reservation reservation = new Reservation(1L, 1L, 1L, false, null, null);
-		Discussion discussion = new Discussion(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
+		Lesson discussion = new Lesson(1L, 1L, "Exam 03/10", LocalDateTime.now().withNano(0), false, null);
 		given(studentService.updateReservation(any(), any())).willReturn(reservation);
 
 		ResponseEntity<Reservation> response =

@@ -6,7 +6,7 @@ import com.stridi.weLearning.repository.StudentRepository;
 import com.stridi.weLearning.utils.object.Role;
 import lombok.extern.slf4j.Slf4j;
 import com.stridi.weLearning.entity.Account;
-import com.stridi.weLearning.entity.Discussion;
+import com.stridi.weLearning.entity.Lesson;
 import com.stridi.weLearning.entity.File;
 import com.stridi.weLearning.entity.Group;
 import com.stridi.weLearning.entity.Professor;
@@ -192,20 +192,20 @@ public class ProfessorServiceTest {
 	@WithMockUser(username = professorUsername, password = defaultPasswordSha3, authorities = {"Professor"})
 	public void getDiscussions() {
 		discussionRepository.saveAll(List.of(
-				new Discussion(professor.getId(), "Exam 03/10", now.plusDays(1)),
-				new Discussion(professor.getId(), "Exam 04/10", now.plusDays(2)),
-				new Discussion(professor.getId(), "Exam 05/10", now.plusDays(3)),
-				new Discussion(professor.getId(), "Exam 06/10", now.plusDays(4)),
-				new Discussion(professor.getId(), "Exam 07/10", now.plusDays(5))
+				new Lesson(professor.getId(), "Exam 03/10", now.plusDays(1)),
+				new Lesson(professor.getId(), "Exam 04/10", now.plusDays(2)),
+				new Lesson(professor.getId(), "Exam 05/10", now.plusDays(3)),
+				new Lesson(professor.getId(), "Exam 06/10", now.plusDays(4)),
+				new Lesson(professor.getId(), "Exam 07/10", now.plusDays(5))
 		));
-		Page<Discussion> discussionPage = discussionRepository.findAllByProfessorIdAndDeletedFalse(professor.getId(), PageRequest.of(0, 10));
+		Page<Lesson> discussionPage = discussionRepository.findAllByProfessorIdAndDeletedFalse(professor.getId(), PageRequest.of(0, 10));
 		assertEquals(discussionPage, professorService.getDiscussions(0, 10));
 	}
 
 	@Test
 	@WithMockUser(username = professorUsername, password = defaultPasswordSha3, authorities = {"Professor"})
 	public void getDiscussion() {
-		Discussion discussion = discussionRepository.save(new Discussion(professor.getId(), "Exam 03/10", now.plusDays(1)));
+		Lesson discussion = discussionRepository.save(new Lesson(professor.getId(), "Exam 03/10", now.plusDays(1)));
 		assertEquals(1, discussionRepository.count());
 		Assertions.assertEquals(discussion, professorService.getDiscussion(discussion.getId()));
 		assertEquals(1, discussionRepository.count());
@@ -214,7 +214,7 @@ public class ProfessorServiceTest {
 	@Test
 	@WithMockUser(username = professorUsername, password = defaultPasswordSha3, authorities = {"Professor"})
 	public void createDiscussion() {
-		Discussion discussion = professorService.createDiscussion("Exam 03/10", now.plusDays(1));
+		Lesson discussion = professorService.createDiscussion("Exam 03/10", now.plusDays(1));
 		assertTrue(discussionRepository.findById(discussion.getId()).isPresent());
 		assertEquals(discussionRepository.findById(discussion.getId()).get(), discussion);
 	}
@@ -222,9 +222,9 @@ public class ProfessorServiceTest {
 	@Test
 	@WithMockUser(username = professorUsername, password = defaultPasswordSha3, authorities = {"Professor"})
 	public void updateDiscussion() {
-		Discussion discussion = discussionRepository.save(new Discussion(professor.getId(), "Exam 03/10", now.plusDays(1)));
+		Lesson discussion = discussionRepository.save(new Lesson(professor.getId(), "Exam 03/10", now.plusDays(1)));
 		assertEquals(1, discussionRepository.count());
-		Discussion updatedDiscussion = professorService.updateDiscussion(discussion.getId(), "Exam 04/10", now.plusDays(2));
+		Lesson updatedDiscussion = professorService.updateDiscussion(discussion.getId(), "Exam 04/10", now.plusDays(2));
 		assertEquals(1, discussionRepository.count());
 		assertTrue(discussionRepository.findById(updatedDiscussion.getId()).isPresent());
 		assertEquals("Exam 04/10", discussionRepository.findById(updatedDiscussion.getId()).get().getName());
@@ -233,7 +233,7 @@ public class ProfessorServiceTest {
 	@Test
 	@WithMockUser(username = professorUsername, password = defaultPasswordSha3, authorities = {"Professor"})
 	public void deleteDiscussion() {
-		Discussion discussion = discussionRepository.save(new Discussion(professor.getId(), "Exam 03/10", now.plusDays(1)));
+		Lesson discussion = discussionRepository.save(new Lesson(professor.getId(), "Exam 03/10", now.plusDays(1)));
 		assertEquals(1, discussionRepository.count());
 		assertTrue(discussionRepository.findById(discussion.getId()).isPresent());
 		assertFalse(discussionRepository.findById(discussion.getId()).get().getDeleted());
@@ -248,11 +248,11 @@ public class ProfessorServiceTest {
 	public void getReservations() {
 		Group group = groupRepository.save(new Group(professor.getId(), student1.getId(), "Test Group"));
 		discussionRepository.saveAll(List.of(
-				new Discussion(professor.getId(), "Exam 03/10", now.plusDays(1)),
-				new Discussion(professor.getId(), "Exam 04/10", now.plusDays(2)),
-				new Discussion(professor.getId(), "Exam 05/10", now.plusDays(3)),
-				new Discussion(professor.getId(), "Exam 06/10", now.plusDays(4)),
-				new Discussion(professor.getId(), "Exam 07/10", now.plusDays(5))
+				new Lesson(professor.getId(), "Exam 03/10", now.plusDays(1)),
+				new Lesson(professor.getId(), "Exam 04/10", now.plusDays(2)),
+				new Lesson(professor.getId(), "Exam 05/10", now.plusDays(3)),
+				new Lesson(professor.getId(), "Exam 06/10", now.plusDays(4)),
+				new Lesson(professor.getId(), "Exam 07/10", now.plusDays(5))
 		)).forEach(discussion -> reservationRepository.save(new Reservation(group.getId(), discussion.getId())));
 		Page<Reservation> reservationPage = reservationRepository.findAllByGroupIdAndDeletedFalse(group.getId(), PageRequest.of(0, 10));
 		assertEquals(reservationPage, professorService.getReservations(0, 10));
@@ -263,13 +263,13 @@ public class ProfessorServiceTest {
 	public void getReservation() {
 		Group group = groupRepository.save(new Group(professor.getId(), student1.getId(), "Test Group"));
 		discussionRepository.saveAll(List.of(
-				new Discussion(professor.getId(), "Exam 03/10", now.plusDays(1)),
-				new Discussion(professor.getId(), "Exam 04/10", now.plusDays(2)),
-				new Discussion(professor.getId(), "Exam 05/10", now.plusDays(3)),
-				new Discussion(professor.getId(), "Exam 06/10", now.plusDays(4)),
-				new Discussion(professor.getId(), "Exam 07/10", now.plusDays(5))
+				new Lesson(professor.getId(), "Exam 03/10", now.plusDays(1)),
+				new Lesson(professor.getId(), "Exam 04/10", now.plusDays(2)),
+				new Lesson(professor.getId(), "Exam 05/10", now.plusDays(3)),
+				new Lesson(professor.getId(), "Exam 06/10", now.plusDays(4)),
+				new Lesson(professor.getId(), "Exam 07/10", now.plusDays(5))
 		));
-		Discussion discussion = discussionRepository.findAll().get(0);
+		Lesson discussion = discussionRepository.findAll().get(0);
 		Reservation reservation = reservationRepository.save(new Reservation(group.getId(), discussion.getId()));
 		assertEquals(1, reservationRepository.count());
 		Assertions.assertEquals(reservation, professorService.getReservation(reservation.getId()));
@@ -280,7 +280,7 @@ public class ProfessorServiceTest {
 	@WithMockUser(username = professorUsername, password = defaultPasswordSha3, authorities = {"Professor"})
 	public void deleteReservation() {
 		Group group = groupRepository.save(new Group(professor.getId(), student1.getId(), "Test Group"));
-		Discussion discussion = discussionRepository.save(new Discussion(professor.getId(), "Exam 03/10", now.plusDays(1)));
+		Lesson discussion = discussionRepository.save(new Lesson(professor.getId(), "Exam 03/10", now.plusDays(1)));
 		Reservation reservation = reservationRepository.save(new Reservation(group.getId(), discussion.getId()));
 		assertEquals(1, reservationRepository.count());
 		professorService.deleteReservation(reservation.getId());

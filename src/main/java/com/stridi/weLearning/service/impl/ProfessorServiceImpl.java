@@ -7,7 +7,7 @@ import com.stridi.weLearning.utils.object.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.stridi.weLearning.entity.Account;
-import com.stridi.weLearning.entity.Discussion;
+import com.stridi.weLearning.entity.Lesson;
 import com.stridi.weLearning.entity.File;
 import com.stridi.weLearning.entity.Group;
 import com.stridi.weLearning.entity.Professor;
@@ -135,7 +135,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 	}
 
 	@Override
-	public Page<Discussion> getDiscussions(Integer page, Integer pageSize) {
+	public Page<Lesson> getDiscussions(Integer page, Integer pageSize) {
 		if (page == null || page < 0) page = 0;
 		if (pageSize == null || pageSize < 1) pageSize = 1;
 		else if (pageSize > 50) pageSize = 50;
@@ -144,27 +144,27 @@ public class ProfessorServiceImpl implements ProfessorService {
 	}
 
 	@Override
-	public Discussion getDiscussion(Long discussionId) {
+	public Lesson getDiscussion(Long discussionId) {
 		return discussionRepository.findById(discussionId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid discussionId"));
 	}
 
 	@Override
-	public Discussion createDiscussion(String name, LocalDateTime date) {
+	public Lesson createDiscussion(String name, LocalDateTime date) {
 		Professor professor = getProfessor();
 
 		if (LocalDateTime.now().isAfter(date)) {
 			throw new IllegalArgumentException("Unable to create a discussion with an earlier date than the current one");
 		}
 
-		return discussionRepository.save(new Discussion(professor.getId(), name, date));
+		return discussionRepository.save(new Lesson(professor.getId(), name, date));
 	}
 
 	@Override
-	public Discussion updateDiscussion(Long discussionId, String name, LocalDateTime date) {
+	public Lesson updateDiscussion(Long discussionId, String name, LocalDateTime date) {
 		Professor professor = getProfessor();
 
-		Discussion discussion = discussionRepository.findByIdAndDeletedFalse(discussionId)
+		Lesson discussion = discussionRepository.findByIdAndDeletedFalse(discussionId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid discussionId"));
 
 		if (!discussion.getProfessorId().equals(professor.getId())) {
@@ -188,7 +188,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 	public void deleteDiscussion(Long discussionId) {
 		Professor professor = getProfessor();
 
-		Discussion discussion = discussionRepository.findByIdAndDeletedFalse(discussionId)
+		Lesson discussion = discussionRepository.findByIdAndDeletedFalse(discussionId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid reservationId"));
 
 		if (!discussion.getProfessorId().equals(professor.getId())) {
@@ -228,7 +228,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 		Reservation reservation = reservationRepository.findById(reservationId)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid reservationId"));
 
-		Discussion discussion = discussionRepository.findById(reservation.getDiscussionId())
+		Lesson discussion = discussionRepository.findById(reservation.getDiscussionId())
 				.orElseThrow(() -> new IllegalArgumentException("Invalid reservationId"));
 
 		if (!discussion.getProfessorId().equals(professor.getId())) {

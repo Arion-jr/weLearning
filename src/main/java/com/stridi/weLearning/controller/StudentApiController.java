@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import com.stridi.weLearning.entity.Discussion;
+import com.stridi.weLearning.entity.Lesson;
 import com.stridi.weLearning.entity.File;
 import com.stridi.weLearning.entity.Group;
 import com.stridi.weLearning.entity.Professor;
@@ -255,9 +255,9 @@ public class StudentApiController {
 			@ApiResponse(responseCode = "400", description = "Operation failed", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "403", description = "Authentication Failure", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	})
-	Page<Discussion> getDiscussions(@PathVariable("professorId") Long professorId,
-                                    @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-                                    @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
+	Page<Lesson> getDiscussions(@PathVariable("professorId") Long professorId,
+                                @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
 		return studentService.getDiscussions(professorId, page, pageSize);
 	}
 
@@ -268,7 +268,7 @@ public class StudentApiController {
 			@ApiResponse(responseCode = "400", description = "Operation failed", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(responseCode = "403", description = "Authentication Failure", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	})
-	Discussion getDiscussion(@PathVariable("discussionId") Long discussionId) {
+    Lesson getDiscussion(@PathVariable("discussionId") Long discussionId) {
 		return studentService.getDiscussion(discussionId);
 	}
 
